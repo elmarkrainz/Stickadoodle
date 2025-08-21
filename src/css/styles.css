@@ -41,6 +41,12 @@ body {
   letter-spacing: 0.2px;
 }
 
+.logo {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
 .add-form {
   margin-left: auto;
   display: flex;
