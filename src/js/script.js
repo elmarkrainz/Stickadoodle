@@ -31,9 +31,8 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return initialState();
-      const parsed = JSON.parse(raw);
+      let parsed = JSON.parse(raw);
       if (!parsed || !parsed.columns) parsed = initialState();
-      // Ensure structure
       parsed.meta = parsed.meta || { title: 'Stickadoodle', teamName: '' };
       parsed.meta.title = String(parsed.meta.title || 'Stickadoodle');
       parsed.meta.teamName = String(parsed.meta.teamName || '');
@@ -265,11 +264,10 @@
     }
   }
 
+  // Init
   attachFormHandlers();
   attachMetaHandlers();
   setupDnD();
   renderBoard();
-  renderMeta();
-})(); 
   renderMeta();
 })(); 
