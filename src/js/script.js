@@ -8,10 +8,23 @@
   const noteInput = document.getElementById('note-input');
   const noteColor = document.getElementById('note-color');
   const clearBtn = document.getElementById('clear-board');
+  const shareBtn = document.getElementById('share-btn');
   const boardTitleInput = document.getElementById('board-title');
   const teamNameInput = document.getElementById('team-name');
 
+  let boardId = getBoardIdFromUrl();
   let state = loadState();
+
+  function getBoardIdFromUrl() {
+    const url = new URL(window.location.href);
+    return url.searchParams.get('id');
+  }
+
+  function setBoardIdInUrl(id) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('id', id);
+    window.history.replaceState({}, '', url.toString());
+  }
 
   function initialState() {
     return {
@@ -46,8 +59,17 @@
     }
   }
 
-  function saveState() {
+  function saveStateLocal() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  async function saveStateRemote() {
+    try {
+      if (!boardId) return;
+      await API.saveBoard(boardId, state);
+    } catch (e) {
+      console.warn('Remote save failed', e);
+    }
   }
 
   function generateId() {
@@ -62,7 +84,8 @@
       createdAt: Date.now()
     };
     state.columns[columnId].push(note);
-    saveState();
+    saveStateLocal();
+    saveStateRemote();
     renderBoard();
   }
 
@@ -72,7 +95,8 @@
       if (idx !== -1) {
         const updated = { ...state.columns[colId][idx], ...updater };
         state.columns[colId].splice(idx, 1, updated);
-        saveState();
+        saveStateLocal();
+        saveStateRemote();
         return { note: updated, columnId: colId, index: idx };
       }
     }
@@ -84,7 +108,8 @@
       const idx = state.columns[colId].findIndex(n => n.id === noteId);
       if (idx !== -1) {
         state.columns[colId].splice(idx, 1);
-        saveState();
+        saveStateLocal();
+        saveStateRemote();
         return true;
       }
     }
@@ -103,7 +128,8 @@
     }
     if (found) {
       state.columns[toColumnId].push(found);
-      saveState();
+      saveStateLocal();
+      saveStateRemote();
     }
   }
 
@@ -242,32 +268,71 @@
         const keepMeta = state.meta;
         state = initialState();
         state.meta = keepMeta;
-        saveState();
+        saveStateLocal();
+        saveStateRemote();
         renderBoard();
         renderMeta();
       }
     });
+
+    if (shareBtn) {
+      shareBtn.addEventListener('click', async () => {
+        try {
+          if (!boardId) {
+            const created = await API.createBoard(state);
+            if (created && created.ok) {
+              boardId = created.id;
+              setBoardIdInUrl(boardId);
+            }
+          } else {
+            await API.saveBoard(boardId, state);
+          }
+          const url = window.location.href;
+          await navigator.clipboard.writeText(url);
+          shareBtn.textContent = 'Copied';
+          setTimeout(() => (shareBtn.textContent = 'Share'), 1200);
+        } catch (e) {
+          console.warn('Share failed', e);
+        }
+      });
+    }
   }
 
   function attachMetaHandlers() {
     if (boardTitleInput) {
       boardTitleInput.addEventListener('input', (e) => {
         state.meta.title = e.target.value;
-        saveState();
+        saveStateLocal();
+        saveStateRemote();
       });
     }
     if (teamNameInput) {
       teamNameInput.addEventListener('input', (e) => {
         state.meta.teamName = e.target.value;
-        saveState();
+        saveStateLocal();
+        saveStateRemote();
       });
     }
   }
 
-  // Init
+  async function bootstrap() {
+    try {
+      if (boardId) {
+        const loaded = await API.loadBoard(boardId);
+        if (loaded && loaded.ok && loaded.data) {
+          state = loaded.data;
+          saveStateLocal();
+        }
+      }
+    } catch (e) {
+      console.warn('Bootstrap load failed', e);
+    }
+    renderBoard();
+    renderMeta();
+  }
+
   attachFormHandlers();
   attachMetaHandlers();
   setupDnD();
-  renderBoard();
-  renderMeta();
+  bootstrap();
 })(); 

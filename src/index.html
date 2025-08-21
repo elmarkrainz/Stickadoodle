@@ -13,6 +13,7 @@
       <textarea id="note-input" class="note-input" placeholder="Write a note..." rows="2"></textarea>
       <input id="note-color" class="note-color" type="color" value="#fff475" aria-label="Note color">
       <button id="add-note-btn" class="add-btn" type="submit">Add note</button>
+      <button id="share-btn" class="add-btn" type="button" title="Copy shareable link">Share</button>
       <button id="clear-board" class="clear-btn" type="button" title="Clear all notes">Clear</button>
     </form>
   </header>
@@ -37,9 +38,10 @@
   </main>
 
   <footer class="app-footer">
-    <small>Drag notes between columns. Double-click a note to edit. Data is saved locally.</small>
+    <small>Drag notes between columns. Double-click a note to edit. Data is saved locally and shared by URL.</small>
   </footer>
 
+  <script src="./js/api.js"></script>
   <script src="./js/script.js"></script>
 </body>
 </html> 

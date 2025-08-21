@@ -1,0 +1,31 @@
+{
+    "meta": {
+        "title": "SW Design Lecture 1",
+        "teamName": "Elmar Team "
+    },
+    "columns": {
+        "todo": [
+            {
+                "id": "n_mel1pza0_ul1pk",
+                "text": "check task",
+                "color": "#fff475",
+                "createdAt": 1755759244248
+            },
+            {
+                "id": "n_mel1pu6q_4dve5",
+                "text": "test",
+                "color": "#fff475",
+                "createdAt": 1755759237650
+            }
+        ],
+        "inprogress": [
+            {
+                "id": "n_mel1q3ic_lyu10",
+                "text": "form teams",
+                "color": "#fff475",
+                "createdAt": 1755759249732
+            }
+        ],
+        "done": []
+    }
+}

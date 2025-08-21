@@ -1,5 +1,10 @@
 # Prompts
 
+
+## 21.8 backend and share
+
+add a php backend to store the todos in a json file and create a unique ID for each list. vith this unique id in the url you cann share this to serveral users
+
 ## 21.8 
 
 add  teamname and title to the board
