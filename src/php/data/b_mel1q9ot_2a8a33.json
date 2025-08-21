@@ -1,6 +1,6 @@
 {
     "meta": {
-        "title": "SW Design Lecture 1",
+        "title": "SW Design Lecture  - Team A",
         "teamName": "Elmar Team "
     },
     "columns": {
@@ -14,6 +14,18 @@
             {
                 "id": "n_mel1pu6q_4dve5",
                 "text": "test",
+                "color": "#fff475",
+                "createdAt": 1755759237650
+            },
+            {
+                "id": "n_mel1pu6q_4dve5",
+                "text": "test3",
+                "color": "#fff475",
+                "createdAt": 1755759237650
+            },
+            {
+                "id": "n_mel1pu6q_4dve5",
+                "text": "test1",
                 "color": "#fff475",
                 "createdAt": 1755759237650
             }

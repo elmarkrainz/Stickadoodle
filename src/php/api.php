@@ -1,6 +1,6 @@
 <?php
 // Simple JSON-file backed API for Stickadoodle
-// Actions: create, load, save
+// Actions: create, load, save, list
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -72,6 +72,25 @@ switch ($action) {
 		$file = $storageDir . '/' . $id . '.json';
 		file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
 		respond(['ok' => true]);
+		break;
+	case 'list':
+		$boards = [];
+		foreach (glob($storageDir . '/*.json') as $file) {
+			$id = basename($file, '.json');
+			$json = @file_get_contents($file);
+			$data = $json ? json_decode($json, true) : null;
+			$title = isset($data['meta']['title']) ? $data['meta']['title'] : 'Untitled';
+			$team = isset($data['meta']['teamName']) ? $data['meta']['teamName'] : '';
+			$updatedAt = filemtime($file);
+			$boards[] = [
+				'id' => $id,
+				'title' => $title,
+				'teamName' => $team,
+				'updatedAt' => $updatedAt
+			];
+		}
+		usort($boards, function($a, $b) { return $b['updatedAt'] - $a['updatedAt']; });
+		respond(['ok' => true, 'boards' => $boards]);
 		break;
 	default:
 		respond(['ok' => false, 'error' => 'Unknown action'], 400);

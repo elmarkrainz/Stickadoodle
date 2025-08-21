@@ -28,5 +28,9 @@ const API = (() => {
 		return request('POST', { action: 'save', id, data });
 	}
 
-	return { createBoard, loadBoard, saveBoard };
+	async function listBoards() {
+		return request('GET', { action: 'list' });
+	}
+
+	return { createBoard, loadBoard, saveBoard, listBoards };
 })(); 

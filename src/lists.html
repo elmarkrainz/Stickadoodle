@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Stickadoodle — All Boards</title>
+	<link rel="stylesheet" href="./css/styles.css">
+	<style>
+		.lists-container{max-width:900px;margin:24px auto;background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+		.lists-header{padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between}
+		.lists{list-style:none;margin:0;padding:0}
+		.lists li{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(0,0,0,0.06)}
+		.lists li:last-child{border-bottom:none}
+		.lists a{color:#111827;text-decoration:none;font-weight:600}
+		.lists .muted{color:#6b7280;font-size:12px}
+		.actions a{display:inline-block;padding:8px 10px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;background:#fff;text-decoration:none}
+	</style>
+</head>
+<body>
+	<div class="lists-container">
+		<div class="lists-header">
+			<h2 style="margin:0">All Boards</h2>
+			<a href="./index.html" class="actions">New board</a>
+		</div>
+		<ul id="boards" class="lists"></ul>
+	</div>
+
+	<script src="./js/api.js"></script>
+	<script>
+	(async function(){
+		const listEl = document.getElementById('boards');
+		try {
+			const res = await API.listBoards();
+			if (res && res.ok) {
+				const boards = res.boards || [];
+				if (!boards.length) {
+					listEl.innerHTML = '<li><span class="muted">No boards yet.</span><span></span></li>';
+					return;
+				}
+				listEl.innerHTML = boards.map(b => {
+					const when = new Date(b.updatedAt * 1000).toLocaleString();
+					const title = (b.title || 'Untitled').replace(/</g,'&lt;');
+					const team = (b.teamName || '').replace(/</g,'&lt;');
+					return `<li>
+						<div>
+							<a href="./index.html?id=${encodeURIComponent(b.id)}">${title}</a>
+							<div class="muted">${team ? team + ' • ' : ''}Updated ${when}</div>
+						</div>
+						<div class="actions">
+							<a href="./index.html?id=${encodeURIComponent(b.id)}">Open</a>
+						</div>
+					</li>`;
+				}).join('');
+			}
+		} catch(e) {
+			listEl.innerHTML = '<li><span class="muted">Failed to load boards.</span><span></span></li>';
+		}
+	})();
+	</script>
+</body>
+</html> 
