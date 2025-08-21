@@ -1,6 +1,6 @@
 {
     "meta": {
-        "title": "SW Design Lecture  - Team A",
+        "title": "SW Design Lecture 1",
         "teamName": "Elmar Team "
     },
     "columns": {
@@ -10,18 +10,6 @@
                 "text": "check task",
                 "color": "#fff475",
                 "createdAt": 1755759244248
-            },
-            {
-                "id": "n_mel1pu6q_4dve5",
-                "text": "test",
-                "color": "#fff475",
-                "createdAt": 1755759237650
-            },
-            {
-                "id": "n_mel1pu6q_4dve5",
-                "text": "test3",
-                "color": "#fff475",
-                "createdAt": 1755759237650
             },
             {
                 "id": "n_mel1pu6q_4dve5",
@@ -36,8 +24,21 @@
                 "text": "form teams",
                 "color": "#fff475",
                 "createdAt": 1755759249732
+            },
+            {
+                "id": "n_mel1pu6q_4dve5",
+                "text": "test",
+                "color": "#fff475",
+                "createdAt": 1755759237650
             }
         ],
-        "done": []
+        "done": [
+            {
+                "id": "n_mel1pu6q_4dve5",
+                "text": "test3",
+                "color": "#fff475",
+                "createdAt": 1755759237650
+            }
+        ]
     }
 }
