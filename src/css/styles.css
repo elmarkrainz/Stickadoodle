@@ -105,6 +105,29 @@ body {
   align-items: start;
 }
 
+.board-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px 4px;
+}
+
+.meta-input {
+  flex: 1 1 240px;
+  max-width: 320px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: var(--surface);
+  outline: none;
+}
+
+.meta-input:focus {
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+  border-color: var(--ring);
+}
+
 .column {
   background: var(--surface);
   border: 1px solid rgba(0,0,0,0.06);

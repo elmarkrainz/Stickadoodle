@@ -18,6 +18,10 @@
   </header>
 
   <main class="board" id="board" aria-label="Kanban board">
+    <section class="board-header" aria-label="Board details">
+      <input id="board-title" class="meta-input" type="text" placeholder="Board title" aria-label="Board title">
+      <input id="team-name" class="meta-input" type="text" placeholder="Team name" aria-label="Team name">
+    </section>
     <section class="column" data-column-id="todo" aria-label="To Do">
       <h2 class="column-title">To Do</h2>
       <div class="column-content dropzone" data-column-id="todo"></div>

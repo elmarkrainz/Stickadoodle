@@ -1,5 +1,31 @@
 # Prompts
 
+## 21.8 
+
+add  teamname and title to the board
+
+## 20.8. refactor folder
+
+move code to src folder and create folder for css and js
+
+	I'll move the web app into a new `src` structure and update asset paths. First I'll create `src/index.html`, `src/css/styles.css`, and `src/js/script.js`, then I'll remove the old root-level files.
+	Ran tool
+	Ran tool
+	Ran tool
+	- I moved the app into `src/` and split assets:
+	  - HTML: `src/index.html`
+	  - CSS: `src/css/styles.css`
+	  - JS: `src/js/script.js`
+	- Paths in `index.html` now point to `./css/styles.css` and `./js/script.js`.
+	- Removed old root-level `index.html`, `styles.css`, `script.js`.
+	
+	Open with your server from the `src` folder (e.g., serve `src` as the root).
+
+
+## 20.8 first prompt in curser
+
+create a webapp for sticky notes in kanbans style, one cann add a note, the note can moved per drag and drop in thre commons
+
 
 ## 20.8 - project name
 

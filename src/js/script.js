@@ -8,11 +8,17 @@
   const noteInput = document.getElementById('note-input');
   const noteColor = document.getElementById('note-color');
   const clearBtn = document.getElementById('clear-board');
+  const boardTitleInput = document.getElementById('board-title');
+  const teamNameInput = document.getElementById('team-name');
 
   let state = loadState();
 
   function initialState() {
     return {
+      meta: {
+        title: 'Stickadoodle',
+        teamName: ''
+      },
       columns: {
         todo: [],
         inprogress: [],
@@ -26,8 +32,11 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return initialState();
       const parsed = JSON.parse(raw);
-      // Basic shape validation
-      if (!parsed || !parsed.columns) return initialState();
+      if (!parsed || !parsed.columns) parsed = initialState();
+      // Ensure structure
+      parsed.meta = parsed.meta || { title: 'Stickadoodle', teamName: '' };
+      parsed.meta.title = String(parsed.meta.title || 'Stickadoodle');
+      parsed.meta.teamName = String(parsed.meta.teamName || '');
       for (const id of columnIds) {
         if (!Array.isArray(parsed.columns[id])) parsed.columns[id] = [];
       }
@@ -126,7 +135,6 @@
     el.appendChild(text);
     el.appendChild(toolbar);
 
-    // Editing
     text.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -139,13 +147,11 @@
       updateNote(note.id, { text: newText });
     });
 
-    // Delete
     delBtn.addEventListener('click', () => {
       removeNote(note.id);
       renderBoard();
     });
 
-    // Drag events
     el.addEventListener('dragstart', (e) => {
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', note.id);
@@ -157,10 +163,8 @@
       el.classList.remove('dragging');
     });
 
-    // Double-click to focus edit
     el.addEventListener('dblclick', () => {
       text.focus();
-      // Move caret to end
       document.execCommand && document.execCommand('selectAll', false, null);
       window.getSelection && window.getSelection().collapseToEnd();
     });
@@ -190,6 +194,11 @@
         zone.appendChild(createNoteElement(note));
       }
     });
+  }
+
+  function renderMeta() {
+    if (boardTitleInput) boardTitleInput.value = state.meta.title || '';
+    if (teamNameInput) teamNameInput.value = state.meta.teamName || '';
   }
 
   function setupDnD() {
@@ -231,15 +240,36 @@
 
     clearBtn.addEventListener('click', () => {
       if (confirm('Clear all notes?')) {
+        const keepMeta = state.meta;
         state = initialState();
+        state.meta = keepMeta;
         saveState();
         renderBoard();
+        renderMeta();
       }
     });
   }
 
-  // Init
+  function attachMetaHandlers() {
+    if (boardTitleInput) {
+      boardTitleInput.addEventListener('input', (e) => {
+        state.meta.title = e.target.value;
+        saveState();
+      });
+    }
+    if (teamNameInput) {
+      teamNameInput.addEventListener('input', (e) => {
+        state.meta.teamName = e.target.value;
+        saveState();
+      });
+    }
+  }
+
   attachFormHandlers();
+  attachMetaHandlers();
   setupDnD();
   renderBoard();
+  renderMeta();
+})(); 
+  renderMeta();
 })(); 
